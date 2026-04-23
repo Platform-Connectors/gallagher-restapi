@@ -1,6 +1,6 @@
 [project]
 name = "gallagher-restapi"
-version = "2.1.0"
+version = "2.1.1"
 description = "Python library for Gallagher REST API"
 authors = [{ name = "Rami Mousleh", email = "rami.mousleh@gallagher-me.com" }]
 requires-python = ">=3.11"
