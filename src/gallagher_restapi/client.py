@@ -705,6 +705,7 @@ class Client:
         self,
         *,
         id: str | None = None,
+        href: str | None = None,
         name: str | None = None,
         description: str | None = None,
         response_fields: list[str] | None = None,
@@ -716,6 +717,7 @@ class Client:
 
         Args:
             id: If provided, fetch a single detailed access group item by ID.
+            href: If provided, fetch a single detailed access group item by href.
             name: Filter by access group name (substring match).
             description: Filter by access group description (substring match).
             response_fields:
@@ -732,10 +734,12 @@ class Client:
         Returns:
             A list of FTAccessGroup objects matching the filters.
         """
-        if id:
+        if id or href:
             response = await self._async_request(
                 models.HTTPMethods.GET,
-                f"{self.api_features.access_groups()}/{id}",
+                href
+                if href is not None
+                else f"{self.api_features.access_groups()}/{id}",
                 params=models.QueryBase(response_fields=response_fields),
             )
             return [models.FTAccessGroup.model_validate(response)]
@@ -895,6 +899,58 @@ class Client:
             models.FTPersonalDataFieldDefinition.model_validate(pdf)
             for pdf in response["results"]
         ]
+
+    async def get_cardholder_personal_data_definitions(
+        self, cardholder_id: str
+    ) -> list[models.FTLinkItem]:
+        """
+        Return all PersonalDataFieldDefinition objects for a cardholder, including those inherited from all direct and indirect access groups.
+
+        Args:
+            cardholder_id: The ID of the cardholder.
+
+        Returns:
+            List of FTLinkItem objects.
+        """
+        # Step 1: Get cardholder with accessGroups field
+        if not (
+            cardholders := await self.get_cardholder(
+                id=cardholder_id, response_fields=["accessGroups"]
+            )
+        ):
+            return []
+        cardholder = cardholders[0]
+        if not cardholder.access_groups:
+            return []
+
+        # Step 2: Collect all access group hrefs (direct and indirect)
+        seen = set()
+        to_visit: list[str] = []
+        for agm in cast(list[models.FTAccessGroupMembership], cardholder.access_groups):
+            if agm.access_group and agm.access_group.href:
+                to_visit.append(agm.access_group.href)
+
+        pdf_defs: dict[str, models.FTLinkItem] = {}
+        while to_visit:
+            if (href := to_visit.pop()) in seen:
+                continue
+            seen.add(href)
+            # Fetch group with personalDataDefinitions and parent
+            groups = await self.get_access_group(
+                response_fields=["personalDataDefinitions", "parent"], href=href
+            )
+            if not groups:
+                continue
+            group = groups[0]
+            # Store full PDF objects from this group, keyed by href for uniqueness
+            for pdf_def in group.personal_data_definitions:
+                pdf_defs[cast(str, pdf_def.href)] = pdf_def
+            # If parent is a list (multiple parents), add all
+            if group.parent:
+                to_visit.append(cast(str, group.parent.href))
+
+        # Step 4: Return all unique PDF definition objects
+        return list(pdf_defs.values())
 
     async def get_image_pdf(
         self, pdf_href: str, b64: bool = False

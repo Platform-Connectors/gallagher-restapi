@@ -7,8 +7,7 @@ import httpx
 import pytest
 import respx
 
-from gallagher_restapi import Client
-from gallagher_restapi import models
+from gallagher_restapi import Client, models
 
 
 @pytest.mark.asyncio
@@ -244,3 +243,34 @@ async def test_get_cardholder_changes(gll_client: Client) -> None:
     changes, next_link = await gll_client.get_cardholder_changes(changes_href.href)
     assert len(changes) > 0
     assert next_link
+
+
+async def test_get_cardholder_personal_data_definitions(
+    gll_client: Client, fixtures: dict[str, Any], respx_mock: respx.MockRouter
+) -> None:
+    """Test get_cardholder_personal_data_definitions returns all inherited PDFs."""
+    # Mock cardholder detail
+    cardholder = fixtures["cardholder"]
+    respx_mock.get(url__regex=r"/api/cardholders/363").mock(
+        return_value=httpx.Response(200, json=cardholder)
+    )
+    # Mock access group 349 (child)
+    ag_349 = [ag for ag in fixtures["access_groups"] if ag["id"] == "349"][0]
+    respx_mock.get(url__regex=r"/api/access_groups/349").mock(
+        return_value=httpx.Response(200, json=ag_349)
+    )
+    # Mock access group 350 (parent)
+    ag_350 = [ag for ag in fixtures["access_groups"] if ag["id"] == "350"][0]
+    respx_mock.get(url__regex=r"/api/access_groups/350").mock(
+        return_value=httpx.Response(200, json=ag_350)
+    )
+
+    # Run method
+    await gll_client.initialize()
+    pdfs = await gll_client.get_cardholder_personal_data_definitions("363")
+    # pdf_names = {pdf["name"] for pdf in pdfs}
+    # assert pdf_names == {"Example PDF1", "Example PDF2", "Example PDF3"}
+    assert len(pdfs) == 3
+    assert pdfs[2] == models.FTLinkItem(
+        name="Example PDF3", href="https://localhost:8904/api/personal_data_fields/988"
+    )
