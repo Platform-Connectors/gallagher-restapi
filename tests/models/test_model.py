@@ -13,8 +13,8 @@ def test_ftapi_features_model(fixtures) -> None:
     assert isinstance(obj, models.FTApiFeatures)
 
     # Ensure one of the features serializes to expected href string
-    assert str(obj.access_groups).endswith("/api/access_groups")
-    assert str(obj.events("updates")).endswith("/api/events/updates")
+    assert "/api/access_groups" in obj.access_groups()
+    assert "/api/events/updates" in obj.events("updates")
 
 
 def test_ftaccess_zone_model(fixtures) -> None:
@@ -94,16 +94,16 @@ def test_ftoutput_model(fixtures) -> None:
 
 def test_ftaccess_group_model(fixtures) -> None:
     """Validate FTAccessGroup model."""
-    payload = fixtures.get("access_group")
-    assert payload is not None, "Fixture must contain 'access_group' key"
+    access_groups = fixtures.get("access_groups")
+    assert access_groups is not None, "Fixture must contain 'access_groups' key"
 
     # Should not raise an error
-    obj = models.FTAccessGroup.model_validate(payload)
+    obj = models.FTAccessGroup.model_validate(access_groups[0])
     assert isinstance(obj, models.FTAccessGroup)
 
     # Ensure one of the features serializes to expected href string
     assert obj.name == "Example Access Group"
-    assert len(obj.access) == 1
+    assert obj.access and len(obj.access) == 1
     assert len(obj.personal_data_definitions) == 2
 
 
