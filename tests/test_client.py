@@ -6,9 +6,8 @@ from ssl import SSLError
 import httpx
 import pytest
 import respx
-from pydantic import BaseModel
 
-import gallagher_restapi.models as models
+from gallagher_restapi import models
 from gallagher_restapi import Client, CloudGateway
 from gallagher_restapi.exceptions import (
     ConnectError,
