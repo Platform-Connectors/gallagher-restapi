@@ -487,13 +487,11 @@ class FTCardholderCard(FTModel):
     issue_level: int | None = Field(None, alias="issueLevel")
     status: FTStatus | None = None
     type: FTLinkItem
-    # invitation: TODO Add invitation model
     active_from: datetime | None = Field(None, alias="from")
     active_until: datetime | None = Field(None, alias="until")
     credentialClass: str | None = None
     trace: bool | None = None
     last_used_time: datetime | None = Field(None, alias="lastUsedTime")
-    # pin TODO add pin field
 
 
 # endregion Cardholder card models

@@ -24,7 +24,7 @@ class CloudGateway(StrEnum):
     AU_GATEWAY = "commandcentre-api-au.security.gallagher.cloud"
     US_GATEWAY = "commandcentre-api-us.security.gallagher.cloud"
 
-
+# pylint: disable-next=fixme
 # TODO: Add wraper that checks the version and raises error if the method is not supported
 class Client:
     """Gallagher REST api base client."""

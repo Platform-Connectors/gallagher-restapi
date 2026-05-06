@@ -34,6 +34,7 @@ disable = [
     "line-too-long",                 # E501, disabled globally
     "not-an-iterable",
     "no-member",
+    "too-few-public-methods",
     "too-many-arguments",
     "too-many-lines",
     "too-many-instance-attributes",
