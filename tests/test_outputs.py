@@ -1,7 +1,7 @@
 """Test Gallagher Outputs methods."""
 
 from datetime import timedelta
-from typing import TYPE_CHECKING, Any
+from typing import Any
 from unittest.mock import patch
 
 import httpx

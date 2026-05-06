@@ -1,6 +1,6 @@
 """Test Gallagher Inputs methods."""
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 from unittest.mock import patch
 
 import httpx

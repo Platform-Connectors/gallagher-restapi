@@ -9,7 +9,7 @@ import respx
 
 from gallagher_restapi import Client
 
-from tests import filtered_response, load_fixture
+from tests import load_fixture
 
 
 def filtered_items_response_by_type(fixture_data: list[dict[str, Any]]):
