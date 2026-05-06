@@ -1,0 +1,32 @@
+{
+  "id": "356",
+  "href": "https://localhost:8904/api/inputs/356",
+  "name": "Example Input",
+  "commands": {
+    "shunt": {
+      "href": "https://localhost:8904/api/inputs/356/shunt"
+    },
+    "unshunt": {
+      "href": "https://localhost:8904/api/inputs/356/unshunt"
+    },
+    "isolate": {
+      "href": "https://localhost:8904/api/inputs/356/isolate"
+    },
+    "deisolate": {
+      "href": "https://localhost:8904/api/inputs/356/deisolate"
+    }
+  },
+  "division": {
+    "id": "2",
+    "href": "https://localhost:8904/api/divisions/2"
+  },
+  "updates": {
+    "href": "https://localhost:8904/api/inputs/356/updates/0_0_0"
+  },
+  "connectedController": {
+    "name": "Example Controller",
+    "id": "354",
+    "href": "https://localhost:8904/api/items/354"
+  },
+  "statusFlags": ["open"]
+}

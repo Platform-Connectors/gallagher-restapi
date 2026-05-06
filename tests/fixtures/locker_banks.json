@@ -1,0 +1,32 @@
+{
+  "results": [
+    {
+      "id": "771",
+      "href": "https://gallaghercc:8904/api/locker_banks/771",
+      "name": "Locker Bank 1",
+      "division": {
+        "id": "2",
+        "href": "https://gallaghercc:8904/api/divisions/2"
+      },
+      "lockers": [
+        {
+          "href": "https://gallaghercc:8904/api/lockers/801",
+          "name": "Locker 1",
+          "lockerBank": {
+            "href": "https://gallaghercc:8904/api/locker_banks/771",
+            "name": "Locker Bank 1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "772",
+      "href": "https://gallaghercc:8904/api/locker_banks/772",
+      "name": "Locker Bank 2",
+      "division": {
+        "id": "2",
+        "href": "https://gallaghercc:8904/api/divisions/2"
+      }
+    }
+  ]
+}

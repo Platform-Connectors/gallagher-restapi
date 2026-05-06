@@ -1,0 +1,19 @@
+{
+  "updates": [
+    {
+      "id": "508",
+      "status": "Controller offline. 62 message(s) pending.",
+      "statusText": "Controller offline.\r\n62 message(s) pending.",
+      "statusFlags": ["controllerOffline"]
+    },
+    {
+      "id": "526",
+      "status": "Disarmed.",
+      "statusText": "Disarmed.",
+      "statusFlags": ["disarmed"]
+    }
+  ],
+  "next": {
+    "href": "https://localhost:8904/api/items/updates/0_0_1"
+  }
+}

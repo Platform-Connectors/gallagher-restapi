@@ -1,0 +1,35 @@
+{
+  "id": "355",
+  "href": "https://localhost:8904/api/outputs/355",
+  "name": "Example Output",
+  "commands": {
+    "on": {
+      "href": "https://localhost:8904/api/outputs/355/on"
+    },
+    "onUntil": {
+      "href": "https://localhost:8904/api/outputs/355/on"
+    },
+    "off": {
+      "href": "https://localhost:8904/api/outputs/355/off"
+    },
+    "offUntil": {
+      "href": "https://localhost:8904/api/outputs/355/off"
+    },
+    "cancel": {
+      "href": "https://localhost:8904/api/outputs/355/cancel"
+    }
+  },
+  "division": {
+    "id": "2",
+    "href": "https://localhost:8904/api/divisions/2"
+  },
+  "updates": {
+    "href": "https://localhost:8904/api/outputs/355/updates/0_0_0"
+  },
+  "connectedController": {
+    "name": "Example Controller",
+    "id": "354",
+    "href": "https://localhost:8904/api/items/354"
+  },
+  "statusFlags": ["controllerOffline"]
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "983",
+    "name": "Example Card Type",
+    "division": {
+      "href": "https://localhost:8904/api/divisions/1236"
+    },
+    "notes": "Disabled after 7d inactivity, 6-char PIN",
+    "facilityCode": "A12345",
+    "credentialClass": "card"
+  },
+  {
+    "id": "310",
+    "name": "Mobile Credential",
+    "division": {
+      "href": "https://localhost:8904/api/divisions/1236"
+    },
+    "notes": "Disabled after 7d inactivity, 6-char PIN",
+    "facilityCode": "P61405",
+    "credentialClass": "mobile",
+    "availableCardStates": [
+      "Active",
+      "Disabled (manually)",
+      "Lost",
+      "Stolen",
+      "Damaged"
+    ]
+  }
+]

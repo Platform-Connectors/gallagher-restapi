@@ -1,0 +1,88 @@
+{
+  "results": [
+    {
+      "type": "update",
+      "cardholder": {
+        "id": "363",
+        "firstName": "John",
+        "division": {
+          "href": "https://localhost:8904/api/divisions/1236",
+          "name": "Main Division"
+        },
+        "pdfs": {
+          "Photo": {
+            "href": "https://localhost:8904/api/cardholders/363/photo"
+          }
+        },
+        "cards": [
+          {
+            "number": "2",
+            "type": {
+              "name": "Example Card Type"
+            }
+          }
+        ],
+        "accessGroups": [
+          {
+            "accessGroup": {
+              "name": "Example Access Group"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "update",
+      "cardholder": {
+        "id": "365",
+        "firstName": "Tom",
+        "division": {
+          "href": "https://localhost:8904/api/divisions/1236",
+          "name": "Main Division"
+        }
+      }
+    },
+    {
+      "type": "update",
+      "cardholder": {
+        "id": "366",
+        "firstName": "Dave",
+        "division": {
+          "href": "https://localhost:8904/api/divisions/1236",
+          "name": "Main Division"
+        },
+        "@employee_id": "p-003",
+        "pdfs": {
+          "Photo": {
+            "href": "https://localhost:8904/api/cardholders/363/photo"
+          }
+        },
+        "cards": [
+          {
+            "number": "4",
+            "type": {
+              "name": "Example Card Type"
+            }
+          }
+        ],
+        "accessGroups": [
+          {
+            "accessGroup": {
+              "name": "Example Access Group"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "remove",
+      "cardholder": {
+        "id": "364",
+        "firstName": "Gavin"
+      }
+    }
+  ],
+  "next": {
+    "href": "https://localhost:8904/api/cardholders/changes?pos=SWEp9"
+  }
+}

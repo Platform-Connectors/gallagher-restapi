@@ -1,0 +1,23 @@
+{
+  "results": [
+    {
+      "name": "Admin",
+      "id": "422",
+      "href": "https://localhost:8904/api/operator_groups/422",
+      "cardholders": {
+        "href": "https://gallaghercc:8904/api/operator_groups/422/cardholders"
+      }
+    },
+    {
+      "name": "Guard",
+      "id": "423",
+      "href": "https://localhost:8904/api/operator_groups/423",
+      "cardholders": {
+        "href": "https://gallaghercc:8904/api/operator_groups/423/cardholders"
+      }
+    }
+  ],
+  "next": {
+    "href": "https://localhost:8904/api/operator_groups?skip=61320"
+  }
+}

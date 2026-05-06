@@ -1,0 +1,35 @@
+{
+  "id": "352",
+  "href": "https://localhost:8904/api/alarm_zones/352",
+  "name": "Example alarm zone",
+  "division": {
+    "id": "2",
+    "href": "https://localhost:8904/api/divisions/2"
+  },
+  "commands": {
+    "arm": {
+      "href": "https://localhost:8904/api/alarm_zones/352/arm",
+      "name": "Armed"
+    },
+    "disarm": {
+      "href": "https://localhost:8904/api/alarm_zones/352/disarm",
+      "name": "Disarmed"
+    },
+    "user1": {
+      "href": "https://localhost:8904/api/alarm_zones/352/user1",
+      "name": "User1"
+    },
+    "user2": {
+      "disabled": "Not available",
+      "name": "User2"
+    }
+  },
+  "updates": {
+    "href": "https://localhost:8904/api/alarm_zones/352/updates/0_0_0"
+  },
+  "connectedController": {
+    "name": "Example Controller",
+    "id": "354",
+    "href": "https://localhost:8904/api/items/354"
+  }
+}

@@ -1,6 +1,6 @@
 """Gallagher item models."""
 
-from __future__ import annotations
+from __future__ import annotations, division
 
 from collections.abc import Callable
 from datetime import datetime
@@ -439,6 +439,7 @@ class FTOperatorGroupMembership(FTModel):
 class FTOperatorGroup(FTModel):
     """FTOperatorGroup item base class."""
 
+    id: str | None = None
     href: str | None = None
     name: str | None = None
     description: str | None = None
@@ -486,13 +487,11 @@ class FTCardholderCard(FTModel):
     issue_level: int | None = Field(None, alias="issueLevel")
     status: FTStatus | None = None
     type: FTLinkItem
-    # invitation: TODO Add invitation model
     active_from: datetime | None = Field(None, alias="from")
     active_until: datetime | None = Field(None, alias="until")
     credentialClass: str | None = None
     trace: bool | None = None
     last_used_time: datetime | None = Field(None, alias="lastUsedTime")
-    # pin TODO add pin field
 
 
 # endregion Cardholder card models
@@ -575,7 +574,10 @@ class FTLocker(FTModel):
     href: str
     name: str
     short_name: str | None = Field(None, alias="shortName")
-    locker_bank: FTLinkItem | None = Field(None, alias="lockerBank")
+    description: str | None = None
+    division: FTItem | None = None
+    notes: str | None = None
+    connected_controller: FTItem | None = Field(None, alias="connectedController")
     assignments: list[LockerAssignment] | None = None
     commands: FTLockerCommands | None = None
     updates: FTItemReference | None = Field(None, exclude=True)

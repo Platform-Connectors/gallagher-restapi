@@ -1,0 +1,232 @@
+{
+  "results": [
+    {
+      "href": "https://localhost:8904/api/cardholders/363",
+      "id": "363",
+      "firstName": "John",
+      "lastName": "Doe",
+      "shortName": "jon",
+      "description": "description",
+      "authorised": true,
+      "lastSuccessfulAccessTime": "2025-09-25T11:31:07Z",
+      "lastSuccessfulAccessZone": {
+        "name": "Example Access Zone",
+        "href": "https://localhost:8904/api/access_zones/347"
+      },
+      "division": {
+        "id": "1236",
+        "href": "https://localhost:8904/api/divisions/1236"
+      },
+      "useExtendedAccessTime": false,
+      "disableCipherPad": false,
+      "updates": {
+        "href": "https://localhost:8904/api/cardholders/363/updates/0_0_0"
+      },
+      "updateLocation": {
+        "href": "https://localhost:8904/api/cardholders/363/update_location"
+      },
+      "edit": {
+        "href": "https://localhost:8904/api/cardholders/363/edit"
+      },
+      "operatorLoginEnabled": true,
+      "operatorUsername": "JDoe",
+      "operatorPasswordExpired": false,
+      "windowsLoginEnabled": true,
+      "windowsUsername": "example.com\\John_Doe",
+      "cards": [
+        {
+          "number": "1234",
+          "cardSerialNumber": "04366FB2BB6380",
+          "type": {
+            "href": "https://localhost:8904/api/card_types/983",
+            "name": "Example Card Type"
+          },
+          "credentialClass": "card",
+          "status": {
+            "value": "Active",
+            "type": "active"
+          },
+          "issueLevel": 1,
+          "href": "https://localhost:8904/api/cardholders/363/cards/123456"
+        },
+        {
+          "number": "1-22228-01-01-0000000004",
+          "type": {
+            "href": "https://localhost:8904/api/card_types/1872",
+            "name": "Apple Employee Badge Type 1"
+          },
+          "credentialClass": "applePass",
+          "status": {
+            "value": "Active",
+            "type": "active"
+          },
+          "deviceType": "applePhone",
+          "href": "https://localhost:8904/api/cardholders/363/cards/123456"
+        },
+        {
+          "number": "1f97296c-1db2-4dcd-a5bf-da8dae628fb0",
+          "type": {
+            "href": "https://localhost:8904/api/card_types/310",
+            "name": "Mobile Credential"
+          },
+          "credentialClass": "mobile",
+          "status": {
+            "value": "Active",
+            "type": "active"
+          },
+          "e2eKey": "somekey=",
+          "bleFacilityId": 123456,
+          "credentialId": "1f97296c-1db2-4dcd-a5bf-da8dae628fb0",
+          "invitation": {
+            "status": "accepted",
+            "email": "john.doe@example.com"
+          },
+          "href": "https://localhost:8904/api/cardholders/363/cards/123456"
+        },
+        {
+          "number": "86e5be3d-7d5c-46da-a19f-33b94d8f5b18",
+          "type": {
+            "href": "https://localhost:8904/api/card_types/980",
+            "name": "Digital ID Type 1"
+          },
+          "credentialClass": "digitalId",
+          "status": {
+            "value": "Active",
+            "type": "active"
+          },
+          "href": "https://localhost:8904/api/cardholders/363/cards/123456"
+        }
+      ],
+      "notifications": {
+        "enabled": false
+      },
+      "accessGroups": [
+        {
+          "accessGroup": {
+            "name": "Example Access Group",
+            "href": "https://localhost:8904/api/access_groups/349"
+          },
+          "status": {
+            "value": "Active",
+            "type": "active"
+          },
+          "href": "https://localhost:8904/api/cardholders/363/access_groups/123456"
+        }
+      ],
+      "competencies": [
+        {
+          "competency": {
+            "name": "Example Competency",
+            "href": "https://localhost:8904/api/competencies/792"
+          },
+          "status": {
+            "value": "Expired",
+            "type": "expired"
+          },
+          "expiryWarning": "2020-06-04T19:59:00Z",
+          "expiry": "2020-06-11T19:59:00Z",
+          "disabled": false,
+          "href": "https://localhost:8904/api/cardholders/363/competencies/123456"
+        }
+      ],
+      "@Mobile1": "+1234567",
+      "@Email": "john.doe@example.com",
+      "@Office Location": "Example Location",
+      "@Photo": {
+        "href": "https://localhost:8904/api/cardholders/363/personal_data/123456"
+      },
+      "@employee_id": 5,
+      "personalDataDefinitions": [
+        {
+          "@Mobile1": {
+            "definition": {
+              "href": "https://localhost:8904/api/personal_data_fields/401",
+              "name": "Mobile1",
+              "id": "401",
+              "type": "mobile"
+            },
+            "value": "+1234567",
+            "href": "https://localhost:8904/api/cardholders/363/personal_data/401",
+            "notifications": false
+          }
+        },
+        {
+          "@Email": {
+            "definition": {
+              "href": "https://localhost:8904/api/personal_data_fields/402",
+              "name": "Email",
+              "id": "402",
+              "type": "email"
+            },
+            "value": "john.doe@example.com",
+            "href": "https://localhost:8904/api/cardholders/363/personal_data/402",
+            "notifications": false
+          }
+        },
+        {
+          "@Office Location": {
+            "definition": {
+              "href": "https://localhost:8904/api/personal_data_fields/404",
+              "name": "Office Location",
+              "id": "404",
+              "type": "strEnum"
+            },
+            "value": "Example Location",
+            "href": "https://localhost:8904/api/cardholders/363/personal_data/404"
+          }
+        },
+        {
+          "@Photo": {
+            "definition": {
+              "href": "https://localhost:8904/api/personal_data_fields/382",
+              "name": "Photo",
+              "id": "382",
+              "type": "image"
+            },
+            "value": {
+              "href": "https://localhost:8904/api/cardholders/363/personal_data/123456"
+            },
+            "href": "https://localhost:8904/api/cardholders/363/personal_data/382"
+          }
+        },
+        {
+          "@employee_id": {
+            "definition": {
+              "href": "https://localhost:8904/api/personal_data_fields/987",
+              "name": "employee_id",
+              "id": "987",
+              "type": "numeric"
+            },
+            "value": 5,
+            "href": "https://localhost:8904/api/cardholders/363/personal_data/987"
+          }
+        }
+      ]
+    },
+    {
+      "href": "https://localhost:8904/api/cardholders/364",
+      "id": "364",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "accessGroups": [
+        {
+          "accessGroup": {
+            "name": "Example Child Group",
+            "href": "https://localhost:8904/api/access_groups/350"
+          },
+          "status": {
+            "value": "Active",
+            "type": "active"
+          },
+          "href": "https://localhost:8904/api/cardholders/364/access_groups/123456"
+        }
+      ]
+    },
+    {
+      "href": "https://localhost:8904/api/cardholders/365",
+      "id": "365",
+      "firstName": "Tom",
+      "lastName": "Blake"
+    }
+  ]
+}

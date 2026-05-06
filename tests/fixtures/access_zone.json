@@ -1,0 +1,99 @@
+{
+  "id": "345",
+  "href": "https://localhost:8904/api/access_zones/345",
+  "name": "Example Access Zone",
+  "commands": {
+    "free": {
+      "href": "https://localhost:8904/api/access_zones/345/free"
+    },
+    "freeUntil": {
+      "href": "https://localhost:8904/api/access_zones/345/free"
+    },
+    "freePin": {
+      "href": "https://localhost:8904/api/access_zones/345/free_pin"
+    },
+    "freePinUntil": {
+      "href": "https://localhost:8904/api/access_zones/345/free_pin"
+    },
+    "secure": {
+      "href": "https://localhost:8904/api/access_zones/345/secure"
+    },
+    "secureUntil": {
+      "href": "https://localhost:8904/api/access_zones/345/secure"
+    },
+    "securePin": {
+      "href": "https://localhost:8904/api/access_zones/345/secure_pin"
+    },
+    "securePinUntil": {
+      "href": "https://localhost:8904/api/access_zones/345/secure_pin"
+    },
+    "codeOnly": {
+      "href": "https://localhost:8904/api/access_zones/345/code_only"
+    },
+    "codeOnlyUntil": {
+      "href": "https://localhost:8904/api/access_zones/345/code_only"
+    },
+    "codeOnlyPin": {
+      "href": "https://localhost:8904/api/access_zones/345/code_only_pin"
+    },
+    "codeOnlyPinUntil": {
+      "href": "https://localhost:8904/api/access_zones/345/code_only_pin"
+    },
+    "dualAuth": {
+      "href": "https://localhost:8904/api/access_zones/345/dual_auth"
+    },
+    "dualAuthUntil": {
+      "href": "https://localhost:8904/api/access_zones/345/dual_auth"
+    },
+    "dualAuthPin": {
+      "href": "https://localhost:8904/api/access_zones/345/dual_auth_pin"
+    },
+    "dualAuthPinUntil": {
+      "href": "https://localhost:8904/api/access_zones/345/dual_auth_pin"
+    },
+    "forgiveAntiPassback": {
+      "href": "https://localhost:8904/api/access_zones/345/forgive_anti_passback"
+    },
+    "setZoneCount": {
+      "href": "https://localhost:8904/api/access_zones/345/set_zone_count"
+    },
+    "lockDown": {
+      "href": "https://localhost:8904/api/access_zones/345/lock_down"
+    },
+    "cancelLockDown": {
+      "href": "https://localhost:8904/api/access_zones/345/cancel_lock_down"
+    },
+    "cancel": {
+      "href": "https://localhost:8904/api/access_zones/345/cancel"
+    }
+  },
+  "division": {
+    "id": "2",
+    "href": "https://localhost:8904/api/divisions/2"
+  },
+  "doors": [
+    {
+      "name": "Example Door1",
+      "href": "https://localhost:8904/api/doors/359",
+      "updates": {
+        "href": "https://localhost:8904/api/doors/359/updates/0_0_0"
+      }
+    },
+    {
+      "name": "Example Door2",
+      "href": "https://localhost:8904/api/doors/464",
+      "updates": {
+        "href": "https://localhost:8904/api/doors/464/updates/0_0_0"
+      }
+    }
+  ],
+  "zoneCount": 5,
+  "updates": {
+    "href": "https://localhost:8904/api/access_zones/345/updates/0_0_0"
+  },
+  "connectedController": {
+    "name": "Example Controller",
+    "id": "354",
+    "href": "https://localhost:8904/api/items/354"
+  }
+}

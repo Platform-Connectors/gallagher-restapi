@@ -8,8 +8,9 @@ import respx
 
 from gallagher_restapi import Client
 
+from tests import load_fixture
 
-@pytest.mark.asyncio
+
 @pytest.mark.parametrize(
     "kwargs",
     [
@@ -34,12 +35,10 @@ from gallagher_restapi import Client
     ],
 )
 async def test_get_access_zone(
-    gll_client: Client,
-    fixtures: dict[str, Any],
-    respx_mock: respx.MockRouter,
-    kwargs: dict[str, Any],
+    gll_client: Client, respx_mock: respx.MockRouter, kwargs: dict[str, Any]
 ) -> None:
     """Test getting access zone items with different arguments."""
+    access_zone_fixture = load_fixture("access_zone.json")
 
     # Filter fixture based on response_fields if provided
     def filter_response(data: dict[str, Any]) -> dict[str, Any]:
@@ -47,7 +46,7 @@ async def test_get_access_zone(
             return data
         return {k: v for k, v in data.items() if k in kwargs["response_fields"]}
 
-    access_zone_response = filter_response(fixtures["access_zone"])
+    access_zone_response = filter_response(access_zone_fixture)
 
     # Mock for single item retrieval (by ID)
     respx_mock.get(url__regex=r"/api/access_zones/\d+").mock(
@@ -62,7 +61,6 @@ async def test_get_access_zone(
         return_value=httpx.Response(200, json={"results": [access_zone_response]})
     )
 
-    await gll_client.initialize()
     access_zones = await gll_client.get_access_zone(**kwargs)
 
     assert access_zones
@@ -71,7 +69,6 @@ async def test_get_access_zone(
     assert access_zones[0].id == "345"
 
 
-@pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("command_name", "override_kwargs"),
     [
@@ -91,26 +88,25 @@ async def test_get_access_zone(
 )
 async def test_override_access_zone(
     gll_client: Client,
-    fixtures: dict[str, Any],
     respx_mock: respx.MockRouter,
     command_name: str,
     override_kwargs: dict[str, Any],
 ) -> None:
     """Test overriding an access zone item with different commands."""
+    access_zone_fixture = load_fixture("access_zone.json")
     # Mock getting the access zone with statusFlags
     respx_mock.get("/api/access_zones/345?fields=statusFlags").mock(
         return_value=httpx.Response(200, json={"statusFlags": [command_name]}),
     )
     # Mock getting the access zone without query params
     respx_mock.get("/api/access_zones/345").mock(
-        return_value=httpx.Response(200, json=fixtures["access_zone"])
+        return_value=httpx.Response(200, json=access_zone_fixture)
     )
     # Mock the command POST endpoint (match any command)
     respx_mock.post(url__regex=r"/api/access_zones/345/.*").mock(
         return_value=httpx.Response(204)
     )
 
-    await gll_client.initialize()
     access_zone = await gll_client.get_access_zone(id="345")
     assert access_zone
     assert access_zone[0].commands

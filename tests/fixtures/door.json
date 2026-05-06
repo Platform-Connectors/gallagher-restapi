@@ -1,0 +1,26 @@
+{
+  "id": "359",
+  "href": "https://localhost:8904/api/doors/359",
+  "name": "Example Door",
+  "division": {
+    "id": "2",
+    "href": "https://localhost:8904/api/divisions/2"
+  },
+  "commands": {
+    "open": {
+      "href": "https://localhost:8904/api/doors/359/open"
+    }
+  },
+  "entryAccessZone": {
+    "name": "Example Access Zone",
+    "href": "https://localhost:8904/api/access_zones/345"
+  },
+  "updates": {
+    "href": "https://localhost:8904/api/doors/359/updates/0_0_0"
+  },
+  "connectedController": {
+    "name": "Example Controller",
+    "id": "354",
+    "href": "https://localhost:8904/api/items/354"
+  }
+}

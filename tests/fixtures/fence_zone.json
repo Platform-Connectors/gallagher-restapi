@@ -1,0 +1,86 @@
+{
+  "results": [
+    {
+      "id": "443",
+      "href": "https://localhost:8904/api/fence_zones/443",
+      "name": "Example Fence Zone",
+      "commands": {
+        "on": {
+          "href": "https://localhost:8904/api/fence_zones/443/on"
+        },
+        "off": {
+          "href": "https://localhost:8904/api/fence_zones/443/off"
+        },
+        "shunt": {
+          "href": "https://localhost:8904/api/fence_zones/443/shunt"
+        },
+        "unshunt": {
+          "href": "https://localhost:8904/api/fence_zones/443/unshunt"
+        },
+        "highVoltage": {
+          "href": "https://localhost:8904/api/fence_zones/443/high_voltage"
+        },
+        "lowFeel": {
+          "href": "https://localhost:8904/api/fence_zones/443/low_feel"
+        },
+        "cancel": {
+          "href": "https://localhost:8904/api/fence_zones/443/cancel"
+        }
+      },
+      "division": {
+        "id": "1311",
+        "href": "https://localhost:8904/api/divisions/1311"
+      },
+      "voltage": 7700,
+      "updates": {
+        "href": "https://localhost:8904/api/fence_zones/443/updates/0_0_0"
+      },
+      "connectedController": {
+        "name": "Example controller",
+        "id": "1309",
+        "href": "https://localhost:8904/api/items/1309"
+      }
+    },
+    {
+      "id": "444",
+      "href": "https://localhost:8904/api/fence_zones/444",
+      "name": "Example Fence Zone 2",
+      "division": {
+        "id": "1311",
+        "href": "https://localhost:8904/api/divisions/1311"
+      },
+      "voltage": 6500,
+      "updates": {
+        "href": "https://localhost:8904/api/fence_zones/444/updates/0_0_0"
+      },
+      "commands": {
+        "on": {
+          "href": "https://localhost:8904/api/fence_zones/444/on"
+        },
+        "off": {
+          "href": "https://localhost:8904/api/fence_zones/444/off"
+        },
+        "shunt": {
+          "href": "https://localhost:8904/api/fence_zones/444/shunt"
+        },
+        "unshunt": {
+          "href": "https://localhost:8904/api/fence_zones/444/unshunt"
+        },
+        "highVoltage": {
+          "href": "https://localhost:8904/api/fence_zones/444/high_voltage"
+        },
+        "lowFeel": {
+          "href": "https://localhost:8904/api/fence_zones/444/low_feel"
+        },
+        "cancel": {
+          "href": "https://localhost:8904/api/fence_zones/444/cancel"
+        }
+      },
+      "connectedController": {
+        "name": "Example controller",
+        "id": "1309",
+        "href": "https://localhost:8904/api/items/1309"
+      }
+    }
+  ]
+}

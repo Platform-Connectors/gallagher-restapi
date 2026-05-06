@@ -1,0 +1,40 @@
+{
+  "id": "801",
+  "href": "https://gallaghercc:8904/api/lockers/801",
+  "name": "Locker 1",
+  "division": {
+    "id": "2",
+    "href": "https://gallaghercc:8904/api/divisions/2"
+  },
+  "assignments": [
+    {
+      "href": "https://gallaghercc:8904/api/cardholders/378/lockers/42142883d4344176a746709511870b65",
+      "cardholder": {
+        "href": "https://gallaghercc:8904/api/cardholders/378",
+        "name": "Rami Mousleh"
+      }
+    }
+  ],
+  "commands": {
+    "open": {
+      "href": "https://gallaghercc:8904/api/lockers/801/open"
+    },
+    "quarantine": {
+      "href": "https://gallaghercc:8904/api/lockers/801/quarantine"
+    },
+    "quarantineUntil": {
+      "href": "https://gallaghercc:8904/api/lockers/801/quarantine"
+    },
+    "cancelQuarantine": {
+      "href": "https://gallaghercc:8904/api/lockers/801/cancel_quarantine"
+    }
+  },
+  "connectedController": {
+    "name": "Office Controller",
+    "id": "354",
+    "href": "https://gallaghercc:8904/api/items/354"
+  },
+  "updates": {
+    "href": "https://gallaghercc:8904/api/lockers/801/updates/0_0_0"
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "508",
+    "href": "https://localhost:8904/api/items/508",
+    "name": "Controller 508",
+    "type": {
+      "id": "117",
+      "name": "Controller 6000"
+    },
+    "division": {
+      "id": "2",
+      "href": "https://localhost:8904/api/items/2"
+    },
+    "statusFlags": ["offline"]
+  },
+  {
+    "id": "526",
+    "href": "https://localhost:8904/api/items/526",
+    "name": "Controller 526",
+    "type": {
+      "id": "117",
+      "name": "Controller 6000"
+    },
+    "division": {
+      "id": "2",
+      "href": "https://localhost:8904/api/items/2"
+    }
+  },
+  {
+    "id": "527",
+    "href": "https://localhost:8904/api/items/527",
+    "name": "Controller 527",
+    "type": {
+      "id": "118",
+      "name": "Controller 7000"
+    },
+    "division": {
+      "id": "2",
+      "href": "https://localhost:8904/api/items/2"
+    }
+  }
+]
