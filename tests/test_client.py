@@ -2,7 +2,6 @@
 
 from copy import deepcopy
 from ssl import SSLError
-from typing import Any
 
 import httpx
 import pytest
@@ -17,6 +16,8 @@ from gallagher_restapi.exceptions import (
     RequestError,
     UnauthorizedError,
 )
+
+from . import load_fixture
 
 
 async def test_client_constructs_with_defaults() -> None:
@@ -90,13 +91,11 @@ async def test_conn_successful(gll_client: Client) -> None:
     """Test successful connection to server."""
     await gll_client.initialize()
     assert gll_client.api_features
-    assert gll_client.version == "9.30.123"
+    assert gll_client.version == "9.30.1874.0"
     assert gll_client.api_features.doors()
 
 
-async def test_wrong_api_key(
-    gll_client: Client, respx_mock: respx.MockRouter, fixtures: dict[str, Any]
-) -> None:
+async def test_wrong_api_key(gll_client: Client, respx_mock: respx.MockRouter) -> None:
     """Test using wrong api key."""
 
     respx_mock.get("/api/").mock(return_value=httpx.Response(401))
@@ -104,25 +103,17 @@ async def test_wrong_api_key(
         UnauthorizedError, match="Unauthorized request. Ensure api key is correct"
     ):
         await gll_client.initialize()
-    respx_mock.get("/api/").mock(
-        return_value=httpx.Response(
-            200,
-            json={"features": deepcopy(fixtures["features"]), "version": "9.30.123"},
-        )
-    )
 
 
-async def test_feature_not_licensed(
-    gll_client: Client, fixtures: dict[str, Any], respx_mock: respx.MockRouter
-) -> None:
+async def test_feature_not_licensed(respx_mock: respx.MockRouter) -> None:
     """Test requsting a feature that is not licensed."""
-    api_features = deepcopy(fixtures["features"])
-    api_features.pop("doors", None)
+    api_fixture = load_fixture("api.json")
+    modified_api_fixture = deepcopy(api_fixture)
+    modified_api_fixture["features"].pop("doors", None)
     respx_mock.get("/api/").mock(
-        return_value=httpx.Response(
-            200, json={"features": api_features, "version": "9.30.123"}
-        )
+        return_value=httpx.Response(200, json=modified_api_fixture)
     )
+    gll_client = Client("test-key")
     await gll_client.initialize()
     with pytest.raises(LicenseError):
         await gll_client.get_door(name="Example Door")
@@ -260,7 +251,7 @@ async def test_async_request_with_body_data(
     """Test that request body data is properly serialized and sent."""
     endpoint = f"{gll_client.server_url}/items"
 
-    class TestData(BaseModel):
+    class TestData(models.FTModel):
         """Test request data model."""
 
         name: str
@@ -279,3 +270,31 @@ async def test_async_request_with_body_data(
     assert route.called
     # Verify the request had JSON content
     assert route.calls.last.request.content == b'{"name":"test","value":42}'
+
+
+@pytest.mark.parametrize(
+    "response_body,expected_message",
+    [
+        ('{"message": "Custom error from server"}', "Custom error from server"),
+        ('{"message": null}', "None"),
+        ("not valid json", "Unknown error"),
+    ],
+)
+async def test_async_request_extracts_message_from_error_body(
+    gll_client: Client,
+    respx_mock: respx.MockRouter,
+    response_body: str,
+    expected_message: str,
+) -> None:
+    """Test that error responses extract message from JSON body or fall back to unknown."""
+    endpoint = f"{gll_client.server_url}/error"
+    respx_mock.get("/error").mock(
+        return_value=httpx.Response(
+            400,
+            content=response_body.encode(),
+            headers={"content-type": "application/json"},
+        )
+    )
+
+    with pytest.raises(RequestError, match=expected_message):
+        await gll_client._async_request(models.HTTPMethods.GET, endpoint)

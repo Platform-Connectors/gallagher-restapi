@@ -1,6 +1,6 @@
 """Gallagher item models."""
 
-from __future__ import annotations
+from __future__ import annotations, division
 
 from collections.abc import Callable
 from datetime import datetime
@@ -439,6 +439,7 @@ class FTOperatorGroupMembership(FTModel):
 class FTOperatorGroup(FTModel):
     """FTOperatorGroup item base class."""
 
+    id: str | None = None
     href: str | None = None
     name: str | None = None
     description: str | None = None
@@ -575,7 +576,10 @@ class FTLocker(FTModel):
     href: str
     name: str
     short_name: str | None = Field(None, alias="shortName")
-    locker_bank: FTLinkItem | None = Field(None, alias="lockerBank")
+    description: str | None = None
+    division: FTItem | None = None
+    notes: str | None = None
+    connected_controller: FTItem | None = Field(None, alias="connectedController")
     assignments: list[LockerAssignment] | None = None
     commands: FTLockerCommands | None = None
     updates: FTItemReference | None = Field(None, exclude=True)

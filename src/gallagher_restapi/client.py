@@ -156,13 +156,14 @@ class Client:
         response = await self._async_request(
             models.HTTPMethods.GET, self.api_features.items("itemTypes")
         )
+        item_types: dict[str, str] = {}
         if response.get("itemTypes"):
-            self._item_types = {
+            item_types = {
                 item_type["name"]: item_type["id"]
                 for item_type in response["itemTypes"]
                 if item_type["name"]
             }
-        return self._item_types
+        return item_types
 
     async def get_item(
         self,
@@ -204,7 +205,7 @@ class Client:
 
         if item_types:
             if not self._item_types:
-                await self.get_item_types()
+                self._item_types = await self.get_item_types()
             type_ids: list[str] = []
             for item_type in item_types or []:
                 if (type_id := self._item_types.get(item_type)) is None:
@@ -780,6 +781,7 @@ class Client:
     async def get_operator_group(
         self,
         *,
+        id: str | None = None,
         name: str | None = None,
         description: str | None = None,
         response_fields: list[str] | None = None,
@@ -804,8 +806,15 @@ class Client:
             top: Maximum number of results to return.
 
         Returns:
-            A list of FTAccessGroup objects matching the filters.
+            A list of FTOperatorGroup objects matching the filters.
         """
+        if id:
+            response = await self._async_request(
+                models.HTTPMethods.GET,
+                f"{self.api_features.operator_groups()}/{id}",
+                params=models.QueryBase(response_fields=response_fields),
+            )
+            return [models.FTOperatorGroup.model_validate(response)]
         response = await self._async_request(
             models.HTTPMethods.GET,
             self.api_features.operator_groups(),
@@ -1210,9 +1219,7 @@ class Client:
         return models.FTItemReference(href=response.get("location", ""))
 
     async def update_cardholder(
-        self,
-        cardholder_href: str,
-        patched_cardholder: models.FTCardholderPatch,
+        self, cardholder_href: str, patched_cardholder: models.FTCardholderPatch
     ) -> None:
         """Update existing cardholder in the system.
 
@@ -1531,26 +1538,22 @@ class Client:
             models.FTLockerBank.model_validate(locker) for locker in response["results"]
         ]
 
-    async def get_locker(self, id: str | None = None) -> models.FTLocker | None:
+    async def get_locker(self, id: str) -> models.FTLocker:
         """Return locker item by id.
 
         Args:
             id: The locker ID.
 
         Returns:
-            The FTLocker object if found, else None.
+            The FTLocker object.
         """
-        try:
-            response: dict[str, Any] = await self._async_request(
-                models.HTTPMethods.GET, f"{self.server_url}/api/lockers/{id}"
-            )
-        except RequestError as err:
-            _LOGGER.warning(str(err))
-            return None
+        response: dict[str, Any] = await self._async_request(
+            models.HTTPMethods.GET, f"{self.server_url}/api/lockers/{id}"
+        )
         return models.FTLocker.model_validate(response)
 
     async def override_locker(self, command_href: str) -> None:
-        """override locker.
+        """Override locker.
 
         Args:
             command_href: The FTItemReference for the override locker command.

@@ -1,0 +1,76 @@
+{
+  "results": [
+    {
+      "id": "349",
+      "href": "https://localhost:8904/api/access_groups/349",
+      "name": "Example Access Group",
+      "division": {
+        "id": "1236",
+        "href": "https://localhost:8904/api/divisions/1236"
+      },
+      "cardholders": {
+        "href": "https://localhost:8904/api/access_groups/349/cardholders"
+      },
+      "children": [
+        {
+          "name": "Example Child Group",
+          "href": "https://localhost:8904/api/access_groups/350"
+        }
+      ],
+      "personalDataDefinitions": [
+        {
+          "name": "Example PDF1",
+          "href": "https://localhost:8904/api/personal_data_fields/987"
+        },
+        {
+          "name": "Example PDF2",
+          "href": "https://localhost:8904/api/personal_data_fields/1890"
+        }
+      ],
+      "visitor": false,
+      "access": [
+        {
+          "accessZone": {
+            "href": "https://localhost:8904/api/access_zones/1981",
+            "name": "Example Access Zone"
+          },
+          "schedule": {
+            "href": "https://localhost:8904/api/schedules/5",
+            "name": "Example Schedule"
+          }
+        }
+      ],
+      "alarmZones": [
+        {
+          "alarmZone": {
+            "href": "https://localhost:8904/api/alarm_zones/442",
+            "name": "Example Alarm Zone"
+          }
+        }
+      ]
+    },
+    {
+      "id": "350",
+      "href": "https://localhost:8904/api/access_groups/350",
+      "name": "Example Child Group",
+      "division": {
+        "id": "1236",
+        "href": "https://localhost:8904/api/divisions/1236"
+      },
+      "cardholders": {
+        "href": "https://localhost:8904/api/access_groups/350/cardholders"
+      },
+      "parent": {
+        "name": "Example Access Group",
+        "href": "https://localhost:8904/api/access_groups/349"
+      },
+      "personalDataDefinitions": [
+        {
+          "name": "Example PDF3",
+          "href": "https://localhost:8904/api/personal_data_fields/988"
+        }
+      ],
+      "visitor": false
+    }
+  ]
+}

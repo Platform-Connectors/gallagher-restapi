@@ -9,8 +9,9 @@ import respx
 
 from gallagher_restapi import Client
 
+from tests.test_access_zones import load_fixture
 
-@pytest.mark.asyncio
+
 @pytest.mark.parametrize(
     "kwargs",
     [
@@ -35,12 +36,10 @@ from gallagher_restapi import Client
     ],
 )
 async def test_get_alarm_zone(
-    gll_client: Client,
-    fixtures: dict[str, Any],
-    respx_mock: respx.MockRouter,
-    kwargs: dict[str, Any],
+    gll_client: Client, respx_mock: respx.MockRouter, kwargs: dict[str, Any]
 ) -> None:
     """Test getting alarm zone items with different arguments."""
+    alarm_zone_fixture = load_fixture("alarm_zone.json")
 
     # Filter fixture based on response_fields if provided
     def filter_response(data: dict[str, Any]) -> dict[str, Any]:
@@ -48,7 +47,7 @@ async def test_get_alarm_zone(
             return data
         return {k: v for k, v in data.items() if k in kwargs["response_fields"]}
 
-    alarm_zone_response = filter_response(fixtures["alarm_zone"])
+    alarm_zone_response = filter_response(alarm_zone_fixture)
 
     # Mock for single item retrieval (by ID)
     respx_mock.get(url__regex=r"/api/alarm_zones/\d+").mock(
@@ -63,7 +62,6 @@ async def test_get_alarm_zone(
         return_value=httpx.Response(200, json={"results": [alarm_zone_response]})
     )
 
-    await gll_client.initialize()
     alarm_zones = await gll_client.get_alarm_zone(**kwargs)
 
     assert alarm_zones
@@ -72,7 +70,6 @@ async def test_get_alarm_zone(
     assert alarm_zones[0].id == "352"
 
 
-@pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("command_name", "end_time"),
     [
@@ -87,12 +84,12 @@ async def test_get_alarm_zone(
 )
 async def test_override_alarm_zone(
     gll_client: Client,
-    fixtures: dict[str, Any],
     respx_mock: respx.MockRouter,
     command_name: str,
     end_time: str | None,
 ) -> None:
     """Test overriding an alarm zone item with different commands."""
+    alarm_zone_fixture = load_fixture("alarm_zone.json")
     # Mock the command POST endpoint (match any command)
     respx_mock.post(url__regex=r"/api/alarm_zones/352/.*").mock(
         return_value=httpx.Response(204)
@@ -100,15 +97,14 @@ async def test_override_alarm_zone(
     # Mock getting the alarm zone with statusFlags
     respx_mock.get(url__regex=r"/api/alarm_zones/352\?.*").mock(
         return_value=httpx.Response(
-            200, json={**fixtures["alarm_zone"], "statusFlags": [command_name]}
+            200, json={**alarm_zone_fixture, "statusFlags": [command_name]}
         ),
     )
     # Mock getting the alarm zone without query params
     respx_mock.get("/api/alarm_zones/352").mock(
-        return_value=httpx.Response(200, json=fixtures["alarm_zone"])
+        return_value=httpx.Response(200, json=alarm_zone_fixture)
     )
 
-    await gll_client.initialize()
     alarm_zone = await gll_client.get_alarm_zone(id="352")
     assert alarm_zone
     assert alarm_zone[0].commands

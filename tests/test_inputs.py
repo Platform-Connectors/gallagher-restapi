@@ -1,37 +1,43 @@
 """Test Gallagher Inputs methods."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+from unittest.mock import patch
 
-from gallagher_restapi import Client
+import httpx
+import respx
+
+from gallagher_restapi import Client, models
+
+from tests import filtered_response, load_fixture
 
 
-async def test_get_input(gll_client: Client) -> None:
+async def test_get_input(gll_client: Client, respx_mock: respx.MockRouter) -> None:
     """Test getting an input item."""
+    input_fixture: dict[str, Any] = load_fixture("input.json")
+
+    # Register mock with fixture response handler
+    respx_mock.get(url__regex=r"/api/inputs(?:/(?P<item_id>\d+))?/?(?:\?.*)?$").mock(
+        side_effect=filtered_response(input_fixture)
+    )
+
     inputs = await gll_client.get_input()
-    if inputs:
-        input = await gll_client.get_input(
-            id=inputs[0].id, response_fields=["statusFlags"]
-        )
-        assert input[0].status_flags == ["open"]
+    assert len(inputs) == 1
+    assert inputs[0].id == "356"
+
+    input_with_flags = await gll_client.get_input(
+        id=inputs[0].id, response_fields=["statusFlags"]
+    )
+    assert len(input_with_flags) == 1
+    assert input_with_flags[0].status_flags == ["open"]
 
 
-async def test_override_input(gll_client: Client) -> None:
+async def test_override_input(gll_client: Client, respx_mock: respx.MockRouter) -> None:
     """Test overriding an input item."""
-    if inputs := await gll_client.get_input():
-        input = await gll_client.get_input(id=inputs[0].id)
-        if TYPE_CHECKING:
-            assert input[0].name is not None
-            assert input[0].commands
-            assert input[0].commands.shunt
-            assert input[0].commands.unshunt
-        await gll_client.override_fence_zone(input[0].commands.shunt)
-        new_input = await gll_client.get_input(
-            id=input[0].id, response_fields=["statusFlags"]
-        )
-        assert new_input[0].status_flags == ["notPolled"]
+    respx_mock.post("/api/inputs/356/shunt").mock(return_value=httpx.Response(200))
+    with patch.object(gll_client, "_async_request") as mock_request:
+        await gll_client.override_input("https://localhost:8904/api/inputs/356/shunt")
 
-        await gll_client.override_fence_zone(input[0].commands.unshunt)
-        new_input = await gll_client.get_input(
-            id=input[0].id, response_fields=["statusFlags"]
+        mock_request.assert_called_once_with(
+            models.HTTPMethods.POST,
+            "https://localhost:8904/api/inputs/356/shunt",
         )
-        assert new_input[0].status_flags == ["open"]

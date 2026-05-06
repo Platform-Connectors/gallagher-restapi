@@ -1,0 +1,19 @@
+[
+  {
+    "id": "404",
+    "name": "Location",
+    "type": "strEnum",
+    "strEnumList": ["Dubai", "Lebanon"],
+    "division": {
+      "href": "https://localhost:8904/api/divisions/1236"
+    }
+  },
+  {
+    "id": "405",
+    "name": "Email",
+    "type": "email",
+    "division": {
+      "href": "https://localhost:8904/api/divisions/1236"
+    }
+  }
+]

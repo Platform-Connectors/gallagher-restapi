@@ -1,0 +1,16 @@
+{
+  "cardholders": [
+    {
+      "cardholder": {
+        "name": "John Doe",
+        "href": "https://localhost:8904/api/cardholders/363"
+      }
+    },
+    {
+      "cardholder": {
+        "name": "Jane Smith",
+        "href": "https://localhost:8904/api/cardholders/364"
+      }
+    }
+  ]
+}

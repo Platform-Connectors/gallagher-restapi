@@ -1,0 +1,29 @@
+{
+  "itemTypes": [
+    {
+      "id": "1",
+      "name": "Cardholder",
+      "canonicalTypeName": "cardholder"
+    },
+    {
+      "id": "2",
+      "name": "Access Group",
+      "canonicalTypeName": "accessgroup"
+    },
+    {
+      "id": "3",
+      "name": "Card Type",
+      "canonicalTypeName": "cardtype"
+    },
+    {
+      "id": "117",
+      "name": "Controller 6000",
+      "canonicalTypeName": "controller6000"
+    },
+    {
+      "id": "118",
+      "name": "Controller 7000",
+      "canonicalTypeName": "controller7000"
+    }
+  ]
+}

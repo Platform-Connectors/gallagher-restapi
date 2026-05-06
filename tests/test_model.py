@@ -1,15 +1,18 @@
 """Tests for models module."""
 
+from typing import Any
+
 from gallagher_restapi import models
 
+from tests import load_fixture
 
-def test_ftapi_features_model(fixtures) -> None:
+
+def test_ftapi_features_model() -> None:
     """Validate FTApiFeatures model."""
-    payload = fixtures.get("features")
-    assert payload is not None, "Fixture must contain 'FTApiFeatures' key"
+    payload: dict[str, Any] = load_fixture("api.json")
 
     # Should not raise an error
-    obj = models.FTApiFeatures.model_validate(payload)
+    obj = models.FTApiFeatures.model_validate(payload["features"])
     assert isinstance(obj, models.FTApiFeatures)
 
     # Ensure one of the features serializes to expected href string
@@ -17,10 +20,9 @@ def test_ftapi_features_model(fixtures) -> None:
     assert "/api/events/updates" in obj.events("updates")
 
 
-def test_ftaccess_zone_model(fixtures) -> None:
+def test_ftaccess_zone_model() -> None:
     """Validate FTAccessZone model."""
-    payload = fixtures.get("access_zone")
-    assert payload is not None, "Fixture must contain 'access_zone' key"
+    payload: dict[str, Any] = load_fixture("access_zone.json")
 
     # Should not raise an error
     obj = models.FTAccessZone.model_validate(payload)
@@ -32,10 +34,9 @@ def test_ftaccess_zone_model(fixtures) -> None:
     assert isinstance(obj.connected_controller, models.FTItem)
 
 
-def test_ftalarm_zone_model(fixtures) -> None:
+def test_ftalarm_zone_model() -> None:
     """Validate FTAlarmZone model."""
-    payload = fixtures.get("alarm_zone")
-    assert payload is not None, "Fixture must contain 'alarm_zone' key"
+    payload: dict[str, Any] = load_fixture("alarm_zone.json")
 
     # Should not raise an error
     obj = models.FTAlarmZone.model_validate(payload)
@@ -48,13 +49,12 @@ def test_ftalarm_zone_model(fixtures) -> None:
     assert obj.commands.user2 is None
 
 
-def test_ftfence_zone_model(fixtures) -> None:
+def test_ftfence_zone_model() -> None:
     """Validate FTFenceZone model."""
-    payload = fixtures.get("fence_zone")
-    assert payload is not None, "Fixture must contain 'fence_zone' key"
+    payload: dict[str, Any] = load_fixture("fence_zone.json")
 
     # Should not raise an error
-    obj = models.FTFenceZone.model_validate(payload)
+    obj = models.FTFenceZone.model_validate(payload["results"][0])
     assert isinstance(obj, models.FTFenceZone)
 
     # Ensure one of the features serializes to expected href string
@@ -62,10 +62,9 @@ def test_ftfence_zone_model(fixtures) -> None:
     assert obj.voltage == 7700
 
 
-def test_ftinput_model(fixtures) -> None:
+def test_ftinput_model() -> None:
     """Validate FTInput model."""
-    payload = fixtures.get("input")
-    assert payload is not None, "Fixture must contain 'input' key"
+    payload: dict[str, Any] = load_fixture("input.json")
 
     # Should not raise an error
     obj = models.FTInput.model_validate(payload)
@@ -77,10 +76,9 @@ def test_ftinput_model(fixtures) -> None:
     assert obj.commands.shunt
 
 
-def test_ftoutput_model(fixtures) -> None:
+def test_ftoutput_model() -> None:
     """Validate FTOutput model."""
-    payload = fixtures.get("output")
-    assert payload is not None, "Fixture must contain 'output' key"
+    payload: dict[str, Any] = load_fixture("output.json")
 
     # Should not raise an error
     obj = models.FTOutput.model_validate(payload)
@@ -92,13 +90,12 @@ def test_ftoutput_model(fixtures) -> None:
     assert obj.commands.off
 
 
-def test_ftaccess_group_model(fixtures) -> None:
+def test_ftaccess_group_model() -> None:
     """Validate FTAccessGroup model."""
-    access_groups = fixtures.get("access_groups")
-    assert access_groups is not None, "Fixture must contain 'access_groups' key"
+    access_groups: dict[str, Any] = load_fixture("access_groups.json")
 
     # Should not raise an error
-    obj = models.FTAccessGroup.model_validate(access_groups[0])
+    obj = models.FTAccessGroup.model_validate(access_groups["results"][0])
     assert isinstance(obj, models.FTAccessGroup)
 
     # Ensure one of the features serializes to expected href string
@@ -107,13 +104,12 @@ def test_ftaccess_group_model(fixtures) -> None:
     assert len(obj.personal_data_definitions) == 2
 
 
-def test_ftcardholder_model(fixtures) -> None:
+def test_ftcardholder_model() -> None:
     """Validate FTCardholder model."""
-    payload = fixtures.get("cardholder")
-    assert payload is not None, "Fixture must contain 'cardholder' key"
+    payload: dict[str, Any] = load_fixture("cardholder.json")
 
     # Should not raise an error
-    obj = models.FTCardholder.model_validate(payload)
+    obj = models.FTCardholder.model_validate(payload["results"][0])
     assert isinstance(obj, models.FTCardholder)
 
     # Ensure one of the features serializes to expected href string
@@ -122,10 +118,9 @@ def test_ftcardholder_model(fixtures) -> None:
     assert len(obj.pdfs) == 5
 
 
-def test_ftdoor_model(fixtures) -> None:
+def test_ftdoor_model() -> None:
     """Validate FTDoor model."""
-    payload = fixtures.get("door")
-    assert payload is not None, "Fixture must contain 'door' key"
+    payload: dict[str, Any] = load_fixture("door.json")
 
     # Should not raise an error
     obj = models.FTDoor.model_validate(payload)

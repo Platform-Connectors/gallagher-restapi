@@ -1,0 +1,174 @@
+{
+  "version": "9.30.1874.0",
+  "versions": {
+    "commandCentre": {
+      "major": 9,
+      "minor": 30,
+      "build": 1874,
+      "revision": 0
+    },
+    "api": {
+      "major": 9,
+      "minor": 30,
+      "build": 1874,
+      "revision": 0
+    }
+  },
+  "features": {
+    "accessGroups": {
+      "accessGroups": {
+        "href": "https://localhost:8904/api/access_groups"
+      }
+    },
+    "accessZones": {
+      "accessZones": {
+        "href": "https://localhost:8904/api/access_zones"
+      }
+    },
+    "alarms": {
+      "alarms": {
+        "href": "https://localhost:8904/api/alarms"
+      },
+      "updates": {
+        "href": "https://localhost:8904/api/alarms/updates"
+      },
+      "divisions": {
+        "href": "https://localhost:8904/api/divisions/view_alarms"
+      }
+    },
+    "alarmZones": {
+      "alarmZones": {
+        "href": "https://localhost:8904/api/alarm_zones"
+      }
+    },
+    "cardholders": {
+      "cardholders": {
+        "href": "https://localhost:8904/api/cardholders"
+      },
+      "updateLocationAccessZones": {
+        "href": "https://localhost:8904/api/access_zones/update_cardholder_location"
+      },
+      "changes": {
+        "href": "https://localhost:8904/api/cardholders/changes"
+      }
+    },
+    "cardTypes": {
+      "cardTypes": {
+        "href": "https://localhost:8904/api/card_types"
+      },
+      "assign": {
+        "href": "https://localhost:8904/api/card_types/assign"
+      }
+    },
+    "competencies": {
+      "competencies": {
+        "href": "https://localhost:8904/api/competencies"
+      }
+    },
+    "dayCategories": {
+      "dayCategories": {
+        "href": "https://localhost:8904/api/day_categories"
+      }
+    },
+    "divisions": {
+      "divisions": {
+        "href": "https://localhost:8904/api/divisions"
+      }
+    },
+    "doors": {
+      "doors": {
+        "href": "https://localhost:8904/api/doors"
+      }
+    },
+    "elevators": {
+      "elevatorGroups": {
+        "href": "https://localhost:8904/api/elevator_groups"
+      }
+    },
+    "events": {
+      "events": {
+        "href": "https://localhost:8904/api/events"
+      },
+      "updates": {
+        "href": "https://localhost:8904/api/events/updates"
+      },
+      "eventGroups": {
+        "href": "https://localhost:8904/api/events/groups"
+      },
+      "divisions": {
+        "href": "https://localhost:8904/api/divisions/view_events"
+      }
+    },
+    "fenceZones": {
+      "fenceZones": {
+        "href": "https://localhost:8904/api/fence_zones"
+      }
+    },
+    "inputs": {
+      "inputs": {
+        "href": "https://localhost:8904/api/inputs"
+      }
+    },
+    "interlockGroups": {
+      "interlockGroups": {
+        "href": "https://localhost:8904/api/interlock_groups"
+      }
+    },
+    "items": {
+      "items": {
+        "href": "https://localhost:8904/api/items"
+      },
+      "itemTypes": {
+        "href": "https://localhost:8904/api/items/types"
+      },
+      "updates": {
+        "href": "https://localhost:8904/api/items/updates"
+      }
+    },
+    "lockerBanks": {
+      "lockerBanks": {
+        "href": "https://localhost:8904/api/locker_banks"
+      }
+    },
+    "macros": {
+      "macros": {
+        "href": "https://localhost:8904/api/macros"
+      }
+    },
+    "operatorGroups": {
+      "operatorGroups": {
+        "href": "https://localhost:8904/api/operator_groups"
+      }
+    },
+    "outputs": {
+      "outputs": {
+        "href": "https://localhost:8904/api/outputs"
+      }
+    },
+    "personalDataFields": {
+      "personalDataFields": {
+        "href": "https://localhost:8904/api/personal_data_fields"
+      }
+    },
+    "receptions": {
+      "receptions": {
+        "href": "https://localhost:8904/api/receptions"
+      }
+    },
+    "roles": {
+      "roles": {
+        "href": "https://localhost:8904/api/roles"
+      }
+    },
+    "schedules": {
+      "schedules": {
+        "href": "https://localhost:8904/api/schedules"
+      }
+    },
+    "visits": {
+      "visits": {
+        "href": "https://localhost:8904/api/visits"
+      }
+    }
+  }
+}

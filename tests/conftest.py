@@ -1,47 +1,21 @@
 """Conftest for models tests."""
 
-import json
-from collections.abc import AsyncGenerator, Generator
-from pathlib import Path
-from typing import Any
+from collections.abc import AsyncGenerator
 
 import httpx
 import pytest
-import pytest_asyncio
 import respx
 
 from gallagher_restapi import Client
 
-
-@pytest.fixture(name="fixtures")
-def mock_fixtures() -> dict[str, Any]:
-    """Load and return the fixtures from tests/models/fixture.json once per session.
-
-    Tests can accept a `fixtures` parameter and read entries by key, e.g.
-    `payload = fixtures['FTApiFeatures']`.
-    """
-    path = Path(__file__).parent / "fixture.json"
-    content = path.read_text(encoding="utf-8")
-    return json.loads(content)
+from tests import load_fixture
 
 
-@pytest.fixture(autouse=True)
-def respx_mock(fixtures: dict[str, Any]) -> Generator[respx.MockRouter, None, None]:
-    """Mock the respx router."""
-    api_features = fixtures["features"]
-    with respx.mock(
-        base_url="https://localhost:8904",
-    ) as mock:
-        mock.get("/api/").mock(
-            return_value=httpx.Response(
-                200, json={"features": api_features, "version": "9.30.123"}
-            )
-        )
-        yield mock
-
-
-@pytest_asyncio.fixture(name="gll_client")
-async def gll_client() -> AsyncGenerator[Client]:
+@pytest.fixture()
+async def gll_client(respx_mock: respx.MockRouter) -> AsyncGenerator[Client]:
     """Return instance of Gallagher client."""
+    api_fixture = load_fixture("api.json")
+    respx_mock.get("/api/").mock(return_value=httpx.Response(200, json=api_fixture))
     client = Client("api_key")
+    await client.initialize()
     yield client

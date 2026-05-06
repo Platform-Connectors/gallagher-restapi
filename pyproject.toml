@@ -32,6 +32,8 @@ load-plugins = ["pylint.extensions.code_style", "pylint.extensions.typing"]
 disable = [
     "invalid-name",                  # N815
     "line-too-long",                 # E501, disabled globally
+    "not-an-iterable",
+    "no-member",
     "too-many-arguments",
     "too-many-lines",
     "too-many-instance-attributes",
@@ -40,7 +42,6 @@ disable = [
     "too-many-branches",             # PLR0912
     "redefined-builtin",             # A001
     "protected-access",              # SLF001
-    "no-member",
 ]
 
 [tool.pytest.ini_options]
@@ -50,3 +51,9 @@ log_format = "%(asctime)s.%(msecs)03d %(levelname)-8s %(threadName)s %(name)s:%(
 log_date_format = "%Y-%m-%d %H:%M:%S"
 asyncio_debug = true
 asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["gallagher_restapi"]
+
+[tool.ruff]
+required-version = ">=0.15.1"

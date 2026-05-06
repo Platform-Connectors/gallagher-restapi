@@ -1,42 +1,62 @@
 """Test Gallagher Outputs methods."""
 
-import asyncio
 from datetime import timedelta
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+from unittest.mock import patch
 
-from gallagher_restapi import Client
+import httpx
+import pytest
+import respx
+
+from gallagher_restapi import Client, models
+
+from tests import filtered_response, load_fixture
 
 
-async def test_get_output(gll_client: Client) -> None:
+async def test_get_output(gll_client: Client, respx_mock: respx.MockRouter) -> None:
     """Test getting an output item."""
-    outputs = await gll_client.get_output(name="7000")
-    if outputs:
-        output = await gll_client.get_output(
-            id=outputs[0].id, response_fields=["statusFlags"]
-        )
-        assert output[0].status_flags == ["controllerOffline"]
+    output_fixture: dict[str, Any] = load_fixture("output.json")
+
+    # Register mock with fixture response handler
+    respx_mock.get(url__regex=r"/api/outputs(?:/(?P<item_id>\d+))?/?(?:\?.*)?$").mock(
+        side_effect=filtered_response(output_fixture)
+    )
+
+    outputs = await gll_client.get_output()
+    assert len(outputs) == 1
+    assert outputs[0].id == "355"
+
+    output_with_flags = await gll_client.get_output(
+        id=outputs[0].id, response_fields=["statusFlags"]
+    )
+    assert len(output_with_flags) == 1
+    assert output_with_flags[0].status_flags == ["controllerOffline"]
 
 
-async def test_override_output(gll_client: Client) -> None:
+@pytest.mark.parametrize(
+    "end_time",
+    [
+        timedelta(seconds=5),
+        None,
+    ],
+)
+async def test_override_output(
+    gll_client: Client, respx_mock: respx.MockRouter, end_time: timedelta | None
+) -> None:
     """Test overriding an output item."""
-    if outputs := await gll_client.get_output(name="Class"):
-        output = await gll_client.get_output(id=outputs[0].id)
-        assert output[0].name is not None
-        if TYPE_CHECKING:
-            assert output[0].commands
-            assert output[0].commands.on
-            assert output[0].commands.cancel
+    respx_mock.post("/api/outputs/355/off").mock(return_value=httpx.Response(200))
+    with patch.object(gll_client, "_async_request") as mock_request:
         await gll_client.override_output(
-            output[0].commands.on, end_time=timedelta(seconds=5)
+            "https://localhost:8904/api/outputs/355/off", end_time=end_time
         )
-        new_output = await gll_client.get_output(
-            id=output[0].id, response_fields=["statusFlags"]
-        )
-        assert new_output[0].status_flags == ["closed", "overridden"]
 
-        await gll_client.override_output(output[0].commands.cancel)
-        await asyncio.sleep(1)
-        new_output = await gll_client.get_output(
-            id=output[0].id, response_fields=["statusFlags"]
-        )
-        assert new_output[0].status_flags == ["open"]
+        mock_request.assert_called_once()
+        call_args = mock_request.call_args
+        assert call_args[0][0] == models.HTTPMethods.POST
+        assert call_args[0][1] == "https://localhost:8904/api/outputs/355/off"
+        data = call_args[1]["data"]
+        assert isinstance(data, models.FTOutputCommandBody)
+        if end_time is None:
+            assert data.end_time is None
+        else:
+            assert data.end_time is not None
