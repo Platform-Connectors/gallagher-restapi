@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from enum import StrEnum
 from json import JSONDecodeError
 from ssl import SSLError
-from typing import Any, cast
+from typing import Any, Literal, cast, overload
 
 import httpx
 
@@ -23,6 +23,7 @@ class CloudGateway(StrEnum):
 
     AU_GATEWAY = "commandcentre-api-au.security.gallagher.cloud"
     US_GATEWAY = "commandcentre-api-us.security.gallagher.cloud"
+
 
 # pylint: disable-next=fixme
 # TODO: Add wraper that checks the version and raises error if the method is not supported
@@ -961,9 +962,15 @@ class Client:
         # Step 4: Return all unique PDF definition objects
         return list(pdf_defs.values())
 
+    @overload
     async def get_image_pdf(
-        self, pdf_href: str, b64: bool = False
-    ) -> bytes | str | None:
+        self, pdf_href: str, b64: Literal[False] = False
+    ) -> bytes: ...
+
+    @overload
+    async def get_image_pdf(self, pdf_href: str, b64: Literal[True]) -> str: ...
+
+    async def get_image_pdf(self, pdf_href: str, b64: bool = False) -> bytes | str:
         """Return the image content from the PDF href.
 
         Args:
@@ -973,15 +980,14 @@ class Client:
         Returns:
             The image content as bytes or base64 string, or None if not found.
         """
-        if response := await self._async_request(models.HTTPMethods.GET, pdf_href):
-            if not isinstance(response.get("results"), bytes):
-                raise ValueError(f"{pdf_href} is not an image href")
-            return (
-                base64.b64encode(response["results"]).decode("utf-8")
-                if b64
-                else response["results"]
-            )
-        return None
+        response = await self._async_request(models.HTTPMethods.GET, pdf_href)
+        if not isinstance(response.get("results"), bytes):
+            raise ValueError(f"{pdf_href} is not an image href")
+        return (
+            base64.b64encode(response["results"]).decode("utf-8")
+            if b64
+            else response["results"]
+        )
 
     async def _search_cardholders(
         self, query: models.CardholderQuery

@@ -1,7 +1,7 @@
 """Test cardholder methods."""
 
 import base64
-from typing import Any
+from typing import Any, Literal
 from unittest.mock import patch
 
 import httpx
@@ -268,7 +268,7 @@ async def test_get_personal_data_field(
 
 @pytest.mark.parametrize("b64", [True, False])
 async def test_get_image_from_pdf(
-    gll_client: Client, b64: bool, respx_mock: respx.MockRouter
+    gll_client: Client, b64: Literal[True, False], respx_mock: respx.MockRouter
 ) -> None:
     """Test getting image from personal data field."""
     photo_href = "/api/cardholders/363/personal_data/123456"
