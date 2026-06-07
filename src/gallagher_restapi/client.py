@@ -982,7 +982,7 @@ class Client:
         """
         response = await self._async_request(models.HTTPMethods.GET, pdf_href)
         if not isinstance(response.get("results"), bytes):
-            raise ValueError(f"{pdf_href} is not an image href")
+            raise ValueError("Expected bytes content in 'results'")
         return (
             base64.b64encode(response["results"]).decode("utf-8")
             if b64

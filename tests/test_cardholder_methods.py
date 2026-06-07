@@ -286,6 +286,22 @@ async def test_get_image_from_pdf(
         assert photo == b"image-bytes"
 
 
+async def test_get_image_from_pdf_(
+    gll_client: Client, respx_mock: respx.MockRouter
+) -> None:
+    """Test getting image from personal data field."""
+    photo_href = "http://localhost/api/cardholders/363/personal_data/123456"
+    respx_mock.get(photo_href).mock(
+        return_value=httpx.Response(
+            200,
+            content='{"results": "not-bytes"}',
+            headers={"Content-Type": "application/json"},
+        )
+    )
+    with pytest.raises(ValueError, match="Expected bytes content in 'results'"):
+        await gll_client.get_image_pdf(photo_href)
+
+
 async def test_get_cardholder_changes(
     gll_client: Client,
     respx_mock: respx.MockRouter,
