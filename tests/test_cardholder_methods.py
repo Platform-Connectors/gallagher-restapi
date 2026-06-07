@@ -1,7 +1,7 @@
 """Test cardholder methods."""
 
 import base64
-from typing import Any
+from typing import Any, Literal
 from unittest.mock import patch
 
 import httpx
@@ -268,7 +268,7 @@ async def test_get_personal_data_field(
 
 @pytest.mark.parametrize("b64", [True, False])
 async def test_get_image_from_pdf(
-    gll_client: Client, b64: bool, respx_mock: respx.MockRouter
+    gll_client: Client, b64: Literal[True, False], respx_mock: respx.MockRouter
 ) -> None:
     """Test getting image from personal data field."""
     photo_href = "/api/cardholders/363/personal_data/123456"
@@ -284,6 +284,22 @@ async def test_get_image_from_pdf(
         assert photo == base64.b64encode(b"image-bytes").decode("utf-8")
     else:
         assert photo == b"image-bytes"
+
+
+async def test_get_image_from_pdf_(
+    gll_client: Client, respx_mock: respx.MockRouter
+) -> None:
+    """Test getting image from personal data field."""
+    photo_href = "http://localhost/api/cardholders/363/personal_data/123456"
+    respx_mock.get(photo_href).mock(
+        return_value=httpx.Response(
+            200,
+            content='{"results": "not-bytes"}',
+            headers={"Content-Type": "application/json"},
+        )
+    )
+    with pytest.raises(ValueError, match="Expected bytes content in 'results'"):
+        await gll_client.get_image_pdf(photo_href)
 
 
 async def test_get_cardholder_changes(
