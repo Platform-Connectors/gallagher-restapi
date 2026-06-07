@@ -453,6 +453,13 @@ class FTOperatorGroup(FTModel):
 
 
 # region Card type models
+
+class CardNumberFormat(StrEnum):
+    """Card number format class."""
+
+    TEXT = "Text"
+    DECIMAL = "Decimal"
+
 class FTCardType(FTModel):
     """FTCardType item base class."""
 
@@ -469,6 +476,7 @@ class FTCardType(FTModel):
     minimum_number: str | None = Field(None, alias="minimumNumber")
     maximum_number: str | None = Field(None, alias="maximumNumber")
     server_display_name: str | None = Field(None, alias="serverDisplayName")
+    card_number_format: CardNumberFormat | None = Field(None, alias="cardNumberFormat")
     regex: str | None = Field(None, alias="regex")
     regex_description: str | None = Field(None, alias="regexDescription")
 

@@ -7,7 +7,8 @@
     },
     "notes": "Disabled after 7d inactivity, 6-char PIN",
     "facilityCode": "A12345",
-    "credentialClass": "card"
+    "credentialClass": "card",
+    "cardNumberFormat": "Decimal"
   },
   {
     "id": "310",
