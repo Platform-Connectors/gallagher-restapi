@@ -14,6 +14,7 @@ import httpx
 
 from . import models
 from .exceptions import ConnectError, GllApiError, RequestError, UnauthorizedError
+from .version import min_api_version
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -25,8 +26,6 @@ class CloudGateway(StrEnum):
     US_GATEWAY = "commandcentre-api-us.security.gallagher.cloud"
 
 
-# pylint: disable-next=fixme
-# TODO: Add wraper that checks the version and raises error if the method is not supported
 class Client:
     """Gallagher REST api base client."""
 
@@ -204,10 +203,10 @@ class Client:
             )
             return [models.FTItem.model_validate(response)]
 
+        type_ids: list[str] = []
         if item_types:
             if not self._item_types:
                 self._item_types = await self.get_item_types()
-            type_ids: list[str] = []
             for item_type in item_types or []:
                 if (type_id := self._item_types.get(item_type)) is None:
                     raise ValueError(f"Unknown item type: {item_type}")
@@ -778,6 +777,32 @@ class Client:
             models.FTAccessGroupMembership.model_validate(item)
             for item in response["cardholders"]
         ]
+
+    @min_api_version("9.30")
+    async def create_access_group(
+        self, access_group: models.FTAccessGroup
+    ) -> models.FTItemReference:
+        """Create a new access group in the system.
+
+        Args:
+            access_group: The FTAccessGroup object to create.
+            An example of creating an access group with only required fields is:
+            ```
+            new_group = FTAccessGroup(
+                name="New Access Group",
+                description="This is a new access group",
+                division=FTItemReference(href="/api/items/123"), # Division reference
+            )
+
+        Returns:
+            A link to the newly created access group.
+        """
+        response = await self._async_request(
+            models.HTTPMethods.POST,
+            self.api_features.access_groups(),
+            data=access_group,
+        )
+        return models.FTItemReference(href=response.get("location", ""))
 
     async def get_operator_group(
         self,

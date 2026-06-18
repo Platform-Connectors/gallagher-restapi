@@ -7,8 +7,7 @@ import httpx
 import pytest
 import respx
 
-from gallagher_restapi import models
-from gallagher_restapi import Client, CloudGateway
+from gallagher_restapi import Client, CloudGateway, models
 from gallagher_restapi.exceptions import (
     ConnectError,
     LicenseError,

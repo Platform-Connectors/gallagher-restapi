@@ -6,7 +6,11 @@ authors = [{ name = "Rami Mousleh", email = "rami.mousleh@gallagher-me.com" }]
 requires-python = ">=3.11"
 license = "MIT"
 readme = "README.rst"
-dependencies = ["httpx>=0.28.1,<1.0.0", "pydantic>=2.12.5,<3.0.0"]
+dependencies = [
+    "httpx>=0.28.1,<1.0.0",
+    "pydantic>=2.12.5,<3.0.0",
+    "awesomeversion>=25.8.0",
+]
 
 [dependency-groups]
 dev = [

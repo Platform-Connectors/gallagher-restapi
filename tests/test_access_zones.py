@@ -1,4 +1,4 @@
-"""Test getting the status of items."""
+"""Test for access zones API calls."""
 
 from typing import Any
 

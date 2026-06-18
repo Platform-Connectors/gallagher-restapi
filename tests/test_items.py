@@ -21,8 +21,7 @@ def filtered_items_response_by_type(fixture_data: list[dict[str, Any]]):
             match = next((item for item in fixtures if item.get("id") == item_id), None)
             return httpx.Response(200, json=match)
 
-        type_ids_raw = request.url.params.get("type")
-        if type_ids_raw:
+        if type_ids_raw := request.url.params.get("type"):
             type_ids = type_ids_raw.split(",")
             filtered = [
                 item for item in fixtures if item.get("type", {}).get("id") in type_ids
@@ -45,32 +44,64 @@ async def test_get_item_types(gll_client: Client, respx_mock: respx.MockRouter) 
     assert item_types["Controller 6000"] == "117"
 
 
-async def test_get_items(gll_client: Client, respx_mock: respx.MockRouter) -> None:
-    """Test getting item resources."""
+@pytest.mark.parametrize(
+    "kwargs, expected_len, expected_ids, check_type_id, check_status_flags",
+    [
+        # Case 1: No kwargs -> Returns all 3 items from the fixture
+        ({}, 3, ["508", "526", "527"], None, None),
+        # Case 2: Filter by item_types -> Returns the 2 "Controller 6000" items
+        ({"item_types": ["Controller 6000"]}, 2, ["508", "526"], "117", None),
+        # Case 3: Filter by single ID and specific response fields
+        (
+            {"id": "508", "response_fields": ["defaults", "statusFlags"]},
+            1,
+            ["508"],
+            None,
+            ["offline"],
+        ),
+    ],
+)
+@pytest.mark.asyncio
+async def test_get_items(
+    gll_client: Client,
+    respx_mock: respx.MockRouter,
+    kwargs: dict[str, Any],
+    expected_len: int,
+    expected_ids: list[str],
+    check_type_id: str | None,
+    check_status_flags: list[str] | None,
+) -> None:
+    """Test getting item resources with various query parameters."""
     items_fixture: list[dict[str, Any]] = load_fixture("items.json")
     respx_mock.get(url__regex=r"/api/items(?:/(?P<item_id>\d+))?/?(?:\?.*)?$").mock(
         side_effect=filtered_items_response_by_type(items_fixture)
     )
+
     with patch.object(
         gll_client,
         "get_item_types",
-        return_value={"Controller 6000": "117"},
+        return_value={"Controller 6000": "117", "Controller 7000": "118"},
     ) as mock_get_item_types:
-        items = await gll_client.get_item(item_types=["Controller 6000"])
+        items = await gll_client.get_item(**kwargs)
 
-    mock_get_item_types.assert_called_once()
-    assert len(items) == 2
-    assert items[0].id == "508"
+    # Only assert mock call if item_types was passed
+    if "item_types" in kwargs:
+        mock_get_item_types.assert_called_once()
+
+    # Verify length and exact IDs returned match the expected slice of the fixture
+    assert len(items) == expected_len
+    assert [item.id for item in items] == expected_ids
+
+    # Sub-property assertions for relevant test cases
     for item in items:
-        assert item.type is not None
-        assert item.type.id == "117"
+        if check_type_id:
+            assert item.type
+            assert item.type.id == check_type_id
 
-    single_item = await gll_client.get_item(
-        id="508", response_fields=["defaults", "statusFlags"]
-    )
-    assert len(single_item) == 1
-    assert single_item[0].id == "508"
-    assert getattr(single_item[0], "statusFlags", None) == ["offline"]
+        if check_status_flags is not None:
+            # Case 3 looks specifically for item 508's status flags
+            if item.id == "508":
+                assert getattr(item, "statusFlags", None) == check_status_flags
 
 
 async def test_get_item_status(

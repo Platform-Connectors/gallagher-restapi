@@ -19,3 +19,7 @@ class LicenseError(GllApiError):
 
 class RequestError(GllApiError):
     """Request error."""
+
+
+class VersionCompatibilityError(GllApiError):
+    """API version compatibility error."""
