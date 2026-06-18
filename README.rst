@@ -315,6 +315,28 @@ For collections like ``cards``, ``access_groups``, and ``lockers``, use the patc
        cardholder_href="https://server/api/cardholders/456"
    )
 
+
+Manage Access Groups
+~~~~~~~~~~~~~~~~~~~~
+
+**Add New Access Group:**
+
+.. note::
+   Supported on version **9.30** and newer.
+
+.. code-block:: python
+
+   from gallagher_restapi.models import FTAccessGroup, FTItemReference
+
+   # Create a new access group  
+   new_access_group = FTAccessGroup(
+        name="New Access Group",
+        description="This is a new access group",
+        division=FTItemReference(href="/api/items/123"),          
+    )
+   access_group_ref = await client.create_access_group(new_access_group)
+
+
 Event Monitoring
 ~~~~~~~~~~~~~~~~
 
