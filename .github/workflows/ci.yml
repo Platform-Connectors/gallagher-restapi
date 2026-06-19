@@ -19,7 +19,13 @@ jobs:
           python-version: "3.11"
           package-source-folder: src/gallagher_restapi
 
-      - name: Coverage summary from action outputs
+      - name: Log Coverage Summary
+        shell: bash
         run: |
-          echo "Total coverage: ${{ steps.ci.outputs.total-coverage }}%"
-          echo "Diff coverage: ${{ steps.ci.outputs.diff-coverage }}%"
+          # Write a clean, visual Markdown table straight to the step summary
+          echo "### 📊 Code Coverage Metrics Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Metric | Coverage Status | Enforced Threshold |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| :--- | :---: | :---: |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| **Total Project Coverage** | ${{ steps.ci.outputs.total-coverage }}% | ${{ inputs.total-coverage-threshold || '95' }}% |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| **PR Changed-Lines (Diff)** | ${{ steps.ci.outputs.diff-coverage }}% | ${{ inputs.diff-coverage-threshold || '100' }}% |" >> "$GITHUB_STEP_SUMMARY"
