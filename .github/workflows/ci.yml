@@ -14,7 +14,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: Platform-Connectors/actions/ci@fix-cov-diff
+      - uses: Platform-Connectors/actions/ci@v1.1
         id: ci
         with:
           python-version: "3.11"
