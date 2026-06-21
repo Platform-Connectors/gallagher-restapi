@@ -316,7 +316,7 @@ For collections like ``cards``, ``access_groups``, and ``lockers``, use the patc
    )
 
 
-Manage Access Groups1
+Manage Access Groups
 ~~~~~~~~~~~~~~~~~~~~
 
 **Add New Access Group:**
