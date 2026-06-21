@@ -9,6 +9,7 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     permissions:
+      statuses: write
       contents: read
       pull-requests: write
 
