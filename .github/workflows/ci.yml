@@ -9,17 +9,14 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     permissions:
+      statuses: write
       contents: read
       pull-requests: write
 
     steps:
-      - uses: Platform-Connectors/actions/ci@v1
+      - uses: Platform-Connectors/actions/ci@v1.1
         id: ci
         with:
           python-version: "3.11"
           package-source-folder: src/gallagher_restapi
-
-      - name: Coverage summary from action outputs
-        run: |
-          echo "Total coverage: ${{ steps.ci.outputs.total-coverage }}%"
-          echo "Diff coverage: ${{ steps.ci.outputs.diff-coverage }}%"
+          total-coverage-threshold: 90
