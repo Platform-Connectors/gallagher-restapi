@@ -19,6 +19,7 @@ jobs:
         with:
           python-version: "3.11"
           package-source-folder: src/gallagher_restapi
+          total-coverage-threshold: 93
 
       - name: Log Coverage Summary
         shell: bash
