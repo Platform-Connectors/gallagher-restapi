@@ -20,9 +20,3 @@ jobs:
           python-version: "3.11"
           package-source-folder: src/gallagher_restapi
           total-coverage-threshold: 93
-
-      - name: Log Coverage Summary
-        shell: bash
-        run: |
-          echo "| **Total Project Coverage** | ${{ steps.ci.outputs.total-coverage }}% | ${{ inputs.total-coverage-threshold || '93' }}% |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| **PR Changed-Lines (Diff)** | ${{ steps.ci.outputs.diff-coverage }}% | ${{ inputs.diff-coverage-threshold || '100' }}% |" >> "$GITHUB_STEP_SUMMARY"
