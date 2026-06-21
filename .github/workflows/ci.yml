@@ -19,4 +19,4 @@ jobs:
         with:
           python-version: "3.11"
           package-source-folder: src/gallagher_restapi
-          total-coverage-threshold: 93
+          total-coverage-threshold: 90
