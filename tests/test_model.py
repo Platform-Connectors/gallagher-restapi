@@ -2,7 +2,10 @@
 
 from typing import Any
 
+import pytest
+
 from gallagher_restapi import models
+from gallagher_restapi.exceptions import FeatureNotFound, LicenseError
 
 from tests import load_fixture
 
@@ -11,13 +14,35 @@ def test_ftapi_features_model() -> None:
     """Validate FTApiFeatures model."""
     payload: dict[str, Any] = load_fixture("api.json")
 
-    # Should not raise an error
     obj = models.FTApiFeatures.model_validate(payload["features"])
-    assert isinstance(obj, models.FTApiFeatures)
 
     # Ensure one of the features serializes to expected href string
     assert "/api/access_groups" in obj.access_groups()
     assert "/api/events/updates" in obj.events("updates")
+
+
+def test_missing_feature() -> None:
+    """Test getting a feature fails if missing."""
+    api_fixture: dict[str, Any] = load_fixture("api.json")["features"]
+    api_fix_modified = api_fixture.copy()
+    api_fix_modified.pop("events")
+
+    api_features = models.FTApiFeatures.model_validate(api_fix_modified)
+
+    with pytest.raises(LicenseError):
+        api_features.events("eventGroups")
+
+
+def test_missing_subfeature() -> None:
+    """Test getting a subfeature fails if missing."""
+    api_fixture: dict[str, Any] = load_fixture("api.json")["features"]
+    api_fix_modified = api_fixture.copy()
+    api_fix_modified["events"].pop("eventGroups")
+
+    api_features = models.FTApiFeatures.model_validate(api_fix_modified)
+
+    with pytest.raises(FeatureNotFound):
+        api_features.events("eventGroups")
 
 
 def test_ftaccess_zone_model() -> None:
@@ -118,6 +143,12 @@ def test_ftcardholder_model() -> None:
     assert len(obj.pdfs) == 5
 
 
+def test_new_cardholder_missing_first_and_last_name() -> None:
+    """Validate FTCardholder model."""
+    with pytest.raises(ValueError):
+        models.FTNewCardholder(division=models.FTItem(href="/api/divisions/1"))
+
+
 def test_ftdoor_model() -> None:
     """Validate FTDoor model."""
     payload: dict[str, Any] = load_fixture("door.json")
@@ -130,3 +161,18 @@ def test_ftdoor_model() -> None:
     assert obj.commands
     assert obj.commands.open
     assert obj.entry_access_zone
+
+
+def test_cardholder_query_access_zones_wrong_format() -> None:
+    """Validate FTCardholderQueryAccessZones model."""
+    with pytest.raises(ValueError):
+        models.CardholderQuery(access_zones="example zone")
+
+
+def test_event_query_serialization() -> None:
+    """Validate FTEventQuery model."""
+    query = models.EventQuery(source=["12", "34"])
+
+    # Ensure serialization to dict is as expected
+    serialized = query.model_dump()
+    assert serialized["source"] == "12,34"

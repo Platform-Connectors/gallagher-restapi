@@ -17,6 +17,10 @@ class LicenseError(GllApiError):
     """Missing license error."""
 
 
+class FeatureNotFound(GllApiError):
+    """Feature not found error."""
+
+
 class RequestError(GllApiError):
     """Request error."""
 
