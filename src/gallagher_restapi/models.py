@@ -16,7 +16,7 @@ from pydantic import (
     model_validator,
 )
 
-from .exceptions import LicenseError
+from .exceptions import FeatureNotFound, LicenseError
 
 MOVEMENT_EVENT_TYPES = ["20001", "20002", "20003", "20047", "20107", "42415"]
 
@@ -96,8 +96,9 @@ class Feature:
         lookup_key = sub_feature or self._name
 
         if not (detail := self._features.get(lookup_key)):
-            raise ValueError(
-                f"'{lookup_key}' is not a valid sub-feature of '{self._name}'"
+            raise FeatureNotFound(
+                f"Sub-feature '{lookup_key}' is unavailable. This is either due to "
+                f"licensing restrictions or an invalid sub-feature name."
             )
         return detail["href"]
 
@@ -454,11 +455,13 @@ class FTOperatorGroup(FTModel):
 
 # region Card type models
 
+
 class CardNumberFormat(StrEnum):
     """Card number format class."""
 
     TEXT = "Text"
     DECIMAL = "Decimal"
+
 
 class FTCardType(FTModel):
     """FTCardType item base class."""
@@ -762,7 +765,7 @@ class FTNewCardholder(FTCardholder):
     @model_validator(mode="after")
     def _validate_name_required(self) -> FTNewCardholder:
         """Ensure at least first_name or last_name is provided."""
-        if not self.first_name and not self.last_name:
+        if not (self.first_name or self.last_name):
             raise ValueError(
                 "At least one of 'first_name' or 'last_name' must be provided"
             )
