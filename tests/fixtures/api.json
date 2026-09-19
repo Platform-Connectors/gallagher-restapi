@@ -170,5 +170,10 @@
         "href": "https://localhost:8904/api/visits"
       }
     }
+  },
+  "me": {
+    "client": {
+      "href": "https://localhost:8904/api/items/1626"
+    }
   }
 }

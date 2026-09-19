@@ -1,6 +1,6 @@
 """Gallagher item models."""
 
-from __future__ import annotations, division
+from __future__ import annotations
 
 from collections.abc import Callable
 from datetime import datetime
@@ -155,6 +155,13 @@ class FTApiFeatures(FTModel):
             alias = field_info.alias or field_name
             wrapped_values[alias] = Feature(alias, values.get(alias, {}))
         return wrapped_values
+
+
+class FTClientStatus(FTModel):
+    """FTClientStatus class."""
+
+    has_fault: bool = Field(alias="hasFault")
+    custom_status_text: str = Field(alias="customStatusText")
 
 
 class FTItemReference(FTModel):

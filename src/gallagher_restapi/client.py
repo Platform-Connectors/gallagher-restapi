@@ -70,6 +70,7 @@ class Client:
         self.event_groups: dict[str, models.FTEventGroup] = {}
         self.event_types: dict[str, models.FTEventType] = {}
         self.version: str | None = None
+        self.client_item: models.FTItemReference | None = None
 
     async def _async_request(
         self,
@@ -146,6 +147,7 @@ class Client:
         )
         self.api_features = models.FTApiFeatures.model_validate(response["features"])
         self.version = response["version"]
+        self.client_item = models.FTItemReference(href=response["me"]["client"]["href"])
 
     async def get_item_types(self) -> dict[str, str]:
         """Fetch item types from server.
@@ -224,6 +226,27 @@ class Client:
             ),
         )
         return [models.FTItem.model_validate(item) for item in response["results"]]
+
+    async def set_rest_item_status(
+        self, has_fault: bool = False, status_msg: str = ""
+    ) -> None:
+        """Set the REST item status.
+
+        Args:
+            has_fault: Set to True to indicate a fault state.
+            status_msg: A message describing the client status.
+        """
+        if not self.client_item:
+            raise ValueError(
+                "Client item reference is not set. Call initialize() first."
+            )
+        await self._async_request(
+            models.HTTPMethods.PATCH,
+            self.client_item.href,
+            data=models.FTClientStatus(
+                has_fault=has_fault, custom_status_text=status_msg
+            ),
+        )
 
     # region Access zone methods
     async def get_access_zone(
