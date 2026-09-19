@@ -90,6 +90,7 @@ async def test_conn_successful(gll_client: Client) -> None:
     await gll_client.initialize()
     assert gll_client.api_features
     assert gll_client.version == "9.30.1874.0"
+    assert gll_client.client_item is not None
     assert gll_client.api_features.doors()
 
 

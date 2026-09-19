@@ -1,5 +1,6 @@
 """Test Gallagher REST item methods."""
 
+import re
 from unittest.mock import patch
 
 import httpx
@@ -7,6 +8,18 @@ import pytest
 import respx
 
 from gallagher_restapi import Client, models
+
+
+async def test_set_client_item_fails(gll_client: Client) -> None:
+    """Test setting client item status fails if not initialized."""
+    gll_client.client_item = None
+    with pytest.raises(
+        ValueError,
+        match=re.escape("Client item reference is not set. Call initialize() first"),
+    ):
+        await gll_client.set_rest_item_status(
+            has_fault=True, status_msg="Client is in fault state"
+        )
 
 
 @pytest.mark.parametrize(
