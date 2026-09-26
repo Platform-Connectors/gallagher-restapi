@@ -405,6 +405,21 @@ Monitor Alarms
        )
 
 
+Set REST item fault status
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    # Set REST item status to fault with a status message
+    await client.set_rest_item_status(
+        has_fault=True, status_msg="System fault detected"
+    )
+
+    # Set RESt item status to normal
+    await client.set_rest_item_status(
+        has_fault=False, status_msg="System operating normally"
+    )
+
 Advanced Features
 -----------------
 
